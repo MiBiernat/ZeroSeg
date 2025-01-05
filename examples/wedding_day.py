@@ -16,42 +16,34 @@ def time_until_wedding():
     delta = wedding_date - now
     
     # Obliczanie całkowitych wartości
-    total_seconds = delta.days * 24 * 3600 + delta.seconds
     total_hours = delta.days * 24 + delta.seconds // 3600
     total_minutes = delta.days * 24 * 60 + delta.seconds // 60
-    
     days = delta.days
-    seconds = delta.seconds % 60
     
-    return days, total_hours, total_minutes, seconds
+    return days, total_hours, total_minutes
 
 def display_countdown(device, deviceId):
     while True:
-        days, hours, minutes, seconds = time_until_wedding()
+        days, hours, minutes = time_until_wedding()
         
         # Domyślnie pokazuj dni
-        text = f"{days} DAYS"
+        text = f"{days}d"
         device.write_text(deviceId, text)
         
         # Sprawdź czy przycisk został naciśnięty
         if not GPIO.input(BUTTON1):
             # Pokaż całkowite godziny
-            text = f"{hours}HRS"
+            text = f"{hours}h"
             device.write_text(deviceId, text)
             time.sleep(3)
             
             # Pokaż całkowite minuty
-            text = f"{minutes}nIn"
-            device.write_text(deviceId, text)
-            time.sleep(3)
-            
-            # Pokaż sekundy
-            text = f"{seconds}SEC"
+            text = f"{minutes}n"
             device.write_text(deviceId, text)
             time.sleep(3)
             
             # Wróć do wyświetlania dni
-            text = f"{days}DAYS"
+            text = f"{days}d"
             device.write_text(deviceId, text)
             
         time.sleep(0.2)
